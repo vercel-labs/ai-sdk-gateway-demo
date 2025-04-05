@@ -7,10 +7,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SendIcon } from "lucide-react";
+import { useRef, useEffect } from "react";
 
 export default function Page() {
   const searchParams = useSearchParams();
   const modelId = searchParams.get("modelId") || "xai/grok-2-1212";
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const { messages, input, handleInputChange, handleSubmit } = useChat({
     api: "/api/chat",
@@ -18,6 +20,10 @@ export default function Page() {
       modelId,
     },
   });
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   return (
     <div className="grid w-screen h-screen grid-rows-[1fr_auto] max-w-[800px] m-auto">
@@ -45,6 +51,7 @@ export default function Page() {
 
             <div className="flex flex-1 items-center">
               <Input
+                ref={inputRef}
                 name="prompt"
                 placeholder="Type your message..."
                 onChange={handleInputChange}
