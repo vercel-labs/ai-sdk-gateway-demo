@@ -36,7 +36,6 @@ export function ModelSelector({
     }
   };
 
-  // Always render the Select component to maintain consistent layout
   return (
     <Select
       defaultValue={modelId}

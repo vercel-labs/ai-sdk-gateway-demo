@@ -16,7 +16,6 @@ function ChatComponent() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const { messages, input, handleInputChange, handleSubmit } = useChat({
-    api: "/api/chat",
     body: {
       modelId,
     },
