@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@ai-sdk/react": "^1.2.5",
-    "@vercel/ai-sdk-gateway": "file:./local-packages/vercel-ai-sdk-gateway-0.0.1.tgz",
+    "@vercel/ai-sdk-gateway": "^0.0.2",
     "ai": "^4.2.11",
     "next": "15.2.4",
     "react": "^19.0.0",
