@@ -7,10 +7,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SendIcon } from "lucide-react";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, Suspense } from "react";
 import { DEFAULT_MODEL } from "@/lib/constants";
 
-export default function Page() {
+function ChatComponent() {
   const searchParams = useSearchParams();
   const modelId = searchParams.get("modelId") || DEFAULT_MODEL;
   const inputRef = useRef<HTMLInputElement>(null);
@@ -81,5 +81,13 @@ export default function Page() {
         </Card>
       </form>
     </div>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div className="p-8">Loading...</div>}>
+      <ChatComponent />
+    </Suspense>
   );
 }
