@@ -1,9 +1,25 @@
 import { useState, useEffect } from "react";
+import type { DisplayModel } from "@/lib/display-model";
+import type { GatewayLanguageModelEntry } from "@vercel/ai-sdk-gateway";
+
+const DEFAULT_MODELS: DisplayModel[] = [
+  { id: "xai/grok-2-1212", label: "Grok 2" },
+  { id: "anthropic/claude-3-7-sonnet", label: "Claude 3.7 Sonnet" },
+  { id: "groq/llama-3.1-70b-versatile", label: "Llama 3.1 70B" },
+  { id: "google/gemini-2.0-flash-002", label: "Gemini 2.0 Flash" },
+];
 
 type Model = {
   id: string;
   label: string;
 };
+
+function buildModelList(models: GatewayLanguageModelEntry[]): DisplayModel[] {
+  return models.map((model) => ({
+    id: model.id,
+    label: model.name,
+  }));
+}
 
 export function useAvailableModels() {
   const [models, setModels] = useState<Model[]>([]);
@@ -13,20 +29,18 @@ export function useAvailableModels() {
   useEffect(() => {
     async function fetchModels() {
       try {
-        // This would be replaced with an actual API call
-        // For now using sample data
-        const sampleModels = [
-          { id: "openai/gpt-4o", label: "GPT-4o" },
-          { id: "openai/gpt-3.5-turbo", label: "GPT-3.5 Turbo" },
-          { id: "anthropic/claude-3-opus", label: "Claude 3 Opus" },
-        ];
-
-        setModels(sampleModels);
-        setIsLoading(false);
+        const response = await fetch("/api/models");
+        if (!response.ok) throw new Error("Failed to fetch models");
+        const data = await response.json();
+        const models = buildModelList(data.models);
+        setModels(models);
+        setError(null);
       } catch (err) {
+        setModels(DEFAULT_MODELS);
         setError(
-          err instanceof Error ? err : new Error("Failed to load models")
+          err instanceof Error ? err : new Error("Failed to fetch models")
         );
+      } finally {
         setIsLoading(false);
       }
     }
