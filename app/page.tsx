@@ -8,10 +8,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SendIcon } from "lucide-react";
 import { useRef, useEffect } from "react";
+import { DEFAULT_MODEL } from "@/lib/constants";
 
 export default function Page() {
   const searchParams = useSearchParams();
-  const modelId = searchParams.get("modelId") || "xai/grok-2-1212";
+  const modelId = searchParams.get("modelId") || DEFAULT_MODEL;
   const inputRef = useRef<HTMLInputElement>(null);
 
   const { messages, input, handleInputChange, handleSubmit } = useChat({

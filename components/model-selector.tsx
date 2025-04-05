@@ -3,7 +3,7 @@
 import { useAvailableModels } from "@/lib/hooks/use-available-models";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
-
+import { DEFAULT_MODEL } from "@/lib/constants";
 import {
   Select,
   SelectContent,
@@ -20,7 +20,7 @@ type ModelSelectorProps = {
 };
 
 export function ModelSelector({
-  modelId = "xai/grok-2-1212",
+  modelId = DEFAULT_MODEL,
   onModelChange,
 }: ModelSelectorProps) {
   const { models, isLoading, error } = useAvailableModels();
