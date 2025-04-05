@@ -15,6 +15,5 @@ One-time setup:
    1. toggle the button under "Secure Backend Access with OIDC Federation" to Enabled and click the "Save" button
 
 Usage:
-1. fetch the project's OIDC authentication token locally via `vc env pull`. The token expiry is 12h. For the time being, you'll need to re-run this command periodically to fetch a new token when it expires.
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to try the chatbot. You can edit the model string in [`app/api/chat/route.ts`](app/api/chat/route.ts).
+1. Fetch the project's OIDC authentication token locally via `vc env pull`. The token expiry is 12h. You'll need to re-run this command to fetch a new token when it expires (we're working on automating this).
+1. Open [http://localhost:3000](http://localhost:3000) with your browser to try the chatbot.

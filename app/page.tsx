@@ -1,45 +1,92 @@
 "use client";
 
 import { useChat } from "@ai-sdk/react";
+import { useSearchParams } from "next/navigation";
+import { ModelSelector } from "@/components/model-selector";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { SendIcon } from "lucide-react";
+import { useRef, useEffect, Suspense } from "react";
+import { DEFAULT_MODEL } from "@/lib/constants";
 
-export default function Page() {
-  const { messages, input, handleInputChange, handleSubmit } = useChat({});
+function ChatComponent() {
+  const searchParams = useSearchParams();
+  const modelId = searchParams.get("modelId") || DEFAULT_MODEL;
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const { messages, input, handleInputChange, handleSubmit } = useChat({
+    body: {
+      modelId,
+    },
+  });
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   return (
-    <div className="max-w-2xl mx-auto p-4 flex flex-col min-h-screen">
-      <div className="flex-1 space-y-4 mb-4">
-        {messages.map((message) => (
-          <div
-            key={message.id}
-            className={`p-4 rounded-lg ${
-              message.role === "user"
-                ? "bg-blue-50 dark:bg-blue-900/20"
-                : "bg-gray-50 dark:bg-gray-800/30"
-            }`}
-          >
-            <strong>{message.role === "user" ? "User: " : "AI: "}</strong>
-            {message.content}
-          </div>
-        ))}
+    <div className="grid w-screen h-screen grid-rows-[1fr_auto] max-w-[800px] m-auto">
+      <div className="flex flex-col-reverse gap-8 p-8 overflow-y-auto">
+        {messages.toReversed().map((m) =>
+          m.role === "user" ? (
+            <div
+              key={m.id}
+              className="whitespace-pre-wrap bg-muted/50 rounded-md p-3 ml-auto max-w-[80%]"
+            >
+              {m.content}
+            </div>
+          ) : (
+            <div key={m.id} className="whitespace-pre-wrap">
+              {m.content}
+            </div>
+          )
+        )}
       </div>
 
-      <form onSubmit={handleSubmit} className="sticky bottom-4">
-        <div className="flex gap-2">
-          <input
-            name="prompt"
-            value={input}
-            onChange={handleInputChange}
-            className="flex-1 p-3 rounded-lg border-2 border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-900"
-            placeholder="Type your message..."
-          />
-          <button
-            type="submit"
-            className="px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            Send
-          </button>
-        </div>
+      <form
+        onSubmit={handleSubmit}
+        className="flex justify-center px-8 pt-0 pb-8"
+      >
+        <Card className="w-full p-0">
+          <CardContent className="flex items-center gap-3 p-2">
+            <ModelSelector modelId={modelId} />
+
+            <div className="flex flex-1 items-center">
+              <Input
+                ref={inputRef}
+                name="prompt"
+                placeholder="Type your message..."
+                onChange={handleInputChange}
+                value={input}
+                className="flex-1 border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                onKeyDown={(e) => {
+                  if (e.metaKey && e.key === "Enter") {
+                    handleSubmit(e);
+                  }
+                }}
+              />
+
+              <Button
+                type="submit"
+                size="icon"
+                variant="ghost"
+                className="h-8 w-8 ml-1"
+              >
+                <SendIcon className="h-4 w-4" />
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </form>
     </div>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div className="p-8">Loading...</div>}>
+      <ChatComponent />
+    </Suspense>
   );
 }

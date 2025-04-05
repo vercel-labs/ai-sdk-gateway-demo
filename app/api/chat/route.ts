@@ -1,15 +1,20 @@
 import { gateway } from "@vercel/ai-sdk-gateway";
 import { streamText } from "ai";
+import { DEFAULT_MODEL } from "@/lib/constants";
 
-// Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
-  const { messages } = await req.json();
+  const { messages, modelId = DEFAULT_MODEL } = await req.json();
+
   const result = streamText({
-    model: gateway("xai/grok-2-1212"),
-    system: "You are a helpful assistant.",
+    model: gateway(modelId),
+    system: "You are a software engineer exploring Generative AI.",
     messages,
+    onError: (error) => {
+      console.error(error);
+    },
   });
+
   return result.toDataStreamResponse();
 }
