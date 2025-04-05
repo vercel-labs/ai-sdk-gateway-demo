@@ -2,6 +2,7 @@
 
 import { useAvailableModels } from "@/lib/hooks/use-available-models";
 import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 
 import {
   Select,
@@ -25,22 +26,6 @@ export function ModelSelector({
   const { models, isLoading, error } = useAvailableModels();
   const router = useRouter();
 
-  if (isLoading) {
-    return <div className="flex justify-center">Loading models...</div>;
-  }
-
-  if (error) {
-    return (
-      <div className="flex justify-center text-red-600">
-        Error: {error.message}
-      </div>
-    );
-  }
-
-  if (!models?.length) {
-    return <div className="flex justify-center">No models available</div>;
-  }
-
   const handleModelChange = (value: string) => {
     if (onModelChange) {
       onModelChange(value);
@@ -51,20 +36,36 @@ export function ModelSelector({
     }
   };
 
+  // Always render the Select component to maintain consistent layout
   return (
-    <Select defaultValue={modelId} onValueChange={handleModelChange}>
+    <Select
+      defaultValue={modelId}
+      onValueChange={handleModelChange}
+      disabled={isLoading || !!error || !models?.length}
+    >
       <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="Select a model" />
+        {isLoading ? (
+          <div className="flex items-center gap-2">
+            <Loader2 className="h-4 w-4 animate-spin" />
+            <span>Loading</span>
+          </div>
+        ) : error ? (
+          <span className="text-red-500">Error</span>
+        ) : !models?.length ? (
+          <span>No models</span>
+        ) : (
+          <SelectValue placeholder="Select a model" />
+        )}
       </SelectTrigger>
 
       <SelectContent>
         <SelectGroup>
           <SelectLabel>Models</SelectLabel>
-          {models.map((model) => (
+          {models?.map((model) => (
             <SelectItem key={model.id} value={model.id}>
               {model.label}
             </SelectItem>
-          ))}
+          )) || []}
         </SelectGroup>
       </SelectContent>
     </Select>

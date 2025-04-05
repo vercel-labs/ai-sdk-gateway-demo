@@ -30,9 +30,12 @@ export default function Page() {
       <div className="flex flex-col-reverse gap-8 p-8 overflow-y-auto">
         {messages.toReversed().map((m) =>
           m.role === "user" ? (
-            <Card key={m.id} className="whitespace-pre-wrap">
-              <CardContent className="p-3">{m.content}</CardContent>
-            </Card>
+            <div
+              key={m.id}
+              className="whitespace-pre-wrap bg-muted/50 rounded-md p-3 ml-auto max-w-[80%]"
+            >
+              {m.content}
+            </div>
           ) : (
             <div key={m.id} className="whitespace-pre-wrap">
               {m.content}
