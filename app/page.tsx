@@ -1,12 +1,24 @@
 "use client";
 
 import { useChat } from "@ai-sdk/react";
+import { useSearchParams } from "next/navigation";
+import { ModelSelector } from "@/components/ModelSelector";
 
 export default function Page() {
-  const { messages, input, handleInputChange, handleSubmit } = useChat({});
+  const searchParams = useSearchParams();
+  const modelId = searchParams.get("modelId") || "xai/grok-2-1212";
+
+  const { messages, input, handleInputChange, handleSubmit } = useChat({
+    api: "/api/chat",
+    body: {
+      modelId,
+    },
+  });
 
   return (
     <div className="max-w-2xl mx-auto p-4 flex flex-col min-h-screen">
+      <ModelSelector modelId={modelId} />
+
       <div className="flex-1 space-y-4 mb-4">
         {messages.map((message) => (
           <div
