@@ -10,14 +10,15 @@ A simple [Next.js](https://nextjs.org) chatbot app to demonstrate the use of the
 1. Install the [Vercel CLI](https://vercel.com/docs/cli) if you don't already have it
 1. Clone the repository you created above: `git clone <repo-url>`
 1. Link it to a Vercel project under your account: `vc link`
-2. Visit the linked Vercel project to enable an authentication token for use with AI Gateway (we're working on automating this):
+1. Visit the linked Vercel project to enable an authentication token for use with AI Gateway (we're working on automating this):
    1. visit the project settings page (rightmost tab in your project's dashboard)
-   2. search for 'OIDC' in settings
-   3. toggle the button under "Secure Backend Access with OIDC Federation" to Enabled and click the "Save" button
+   1. search for 'OIDC' in settings
+   1. toggle the button under "Secure Backend Access with OIDC Federation" to Enabled and click the "Save" button
 
 ### Usage
 1. Fetch the project's OIDC authentication token locally via `vc env pull`. The token expiry is 12h. You'll need to re-run this command to fetch a new token when it expires (we're working on automating this).
-1. Open [http://localhost:3000](http://localhost:3000) with your browser to try the chatbot.
+1. `pnpm i` (or `npm i` or `yarn i`) and `vc dev`
+1. Open http://localhost:3000 to try the chatbot.
 
 ## Authors
 
