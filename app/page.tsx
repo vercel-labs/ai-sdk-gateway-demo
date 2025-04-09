@@ -1,30 +1,56 @@
 "use client";
 
 import { useChat } from "@ai-sdk/react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { ModelSelector } from "@/components/model-selector";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SendIcon } from "lucide-react";
-import { useRef, useEffect, Suspense } from "react";
+import { useRef, useEffect, Suspense, useState, useCallback } from "react";
 import { DEFAULT_MODEL } from "@/lib/constants";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 
-function ModelSelectorWithParams() {
+function ModelSelectorHandler({
+  onModelIdChange,
+}: {
+  onModelIdChange: (newModelId: string) => void;
+}) {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const modelId = searchParams.get("modelId") || DEFAULT_MODEL;
-  return <ModelSelector modelId={modelId} />;
+
+  useEffect(() => {
+    onModelIdChange(modelId);
+  }, [modelId, onModelIdChange]);
+
+  const handleSelectChange = useCallback(
+    (newModelId: string) => {
+      onModelIdChange(newModelId);
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("modelId", newModelId);
+      router.push(`?${params.toString()}`);
+    },
+    [searchParams, router, onModelIdChange]
+  );
+
+  return <ModelSelector modelId={modelId} onModelChange={handleSelectChange} />;
 }
 
-function ChatComponent({ modelId }: { modelId: string }) {
+function ChatComponent() {
   const inputRef = useRef<HTMLInputElement>(null);
+  const [currentModelId, setCurrentModelId] = useState(DEFAULT_MODEL);
+
+  const handleModelIdChange = useCallback((newModelId: string) => {
+    setCurrentModelId(newModelId);
+  }, []);
 
   const { messages, input, handleInputChange, handleSubmit, error, reload } =
     useChat({
+      key: currentModelId,
       body: {
-        modelId,
+        modelId: currentModelId,
       },
     });
 
@@ -76,8 +102,15 @@ function ChatComponent({ modelId }: { modelId: string }) {
       >
         <Card className="w-full p-0">
           <CardContent className="flex items-center gap-3 p-2">
-            <Suspense fallback={<ModelSelector modelId={DEFAULT_MODEL} />}>
-              <ModelSelectorWithParams />
+            <Suspense
+              fallback={
+                <ModelSelector
+                  modelId={DEFAULT_MODEL}
+                  onModelChange={() => {}}
+                />
+              }
+            >
+              <ModelSelectorHandler onModelIdChange={handleModelIdChange} />
             </Suspense>
 
             <div className="flex flex-1 items-center">
@@ -112,5 +145,5 @@ function ChatComponent({ modelId }: { modelId: string }) {
 }
 
 export default function Page() {
-  return <ChatComponent modelId={DEFAULT_MODEL} />;
+  return <ChatComponent />;
 }

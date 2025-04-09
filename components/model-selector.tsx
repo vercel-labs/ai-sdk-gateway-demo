@@ -1,7 +1,6 @@
 "use client";
 
 import { useAvailableModels } from "@/lib/hooks/use-available-models";
-import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { DEFAULT_MODEL } from "@/lib/constants";
 import {
@@ -17,24 +16,19 @@ import { memo } from "react";
 
 type ModelSelectorProps = {
   modelId: string;
+  onModelChange: (modelId: string) => void;
 };
 
 export const ModelSelector = memo(function ModelSelector({
   modelId = DEFAULT_MODEL,
+  onModelChange,
 }: ModelSelectorProps) {
   const { models, isLoading, error } = useAvailableModels();
-  const router = useRouter();
-
-  const handleModelChange = (value: string) => {
-    const params = new URLSearchParams();
-    params.set("modelId", value);
-    router.push(`/?${params.toString()}`);
-  };
 
   return (
     <Select
       value={modelId}
-      onValueChange={handleModelChange}
+      onValueChange={onModelChange}
       disabled={isLoading || !!error || !models?.length}
     >
       <SelectTrigger className="w-[180px]">
