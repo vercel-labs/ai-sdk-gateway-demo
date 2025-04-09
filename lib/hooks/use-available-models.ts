@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import type { DisplayModel } from "@/lib/display-model";
 import type { GatewayLanguageModelEntry } from "@vercel/ai-sdk-gateway";
 
@@ -22,31 +22,30 @@ function buildModelList(models: GatewayLanguageModelEntry[]): DisplayModel[] {
 }
 
 export function useAvailableModels() {
-  const [models, setModels] = useState<Model[]>([]);
+  const [models, setModels] = useState<Model[]>(DEFAULT_MODELS);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
-  useEffect(() => {
-    async function fetchModels() {
-      try {
-        const response = await fetch("/api/models");
-        if (!response.ok) throw new Error("Failed to fetch models");
-        const data = await response.json();
-        const models = buildModelList(data.models);
-        setModels(models);
-        setError(null);
-      } catch (err) {
-        setModels(DEFAULT_MODELS);
-        setError(
-          err instanceof Error ? err : new Error("Failed to fetch models")
-        );
-      } finally {
-        setIsLoading(false);
-      }
+  const fetchModels = useCallback(async () => {
+    try {
+      const response = await fetch("/api/models");
+      if (!response.ok) throw new Error("Failed to fetch models");
+      const data = await response.json();
+      const newModels = buildModelList(data.models);
+      setModels(newModels);
+      setError(null);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err : new Error("Failed to fetch models")
+      );
+    } finally {
+      setIsLoading(false);
     }
-
-    fetchModels();
   }, []);
+
+  useEffect(() => {
+    fetchModels();
+  }, [fetchModels]);
 
   return { models, isLoading, error };
 }

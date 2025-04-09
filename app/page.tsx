@@ -7,23 +7,26 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SendIcon } from "lucide-react";
-import { useRef, useEffect, Suspense } from "react";
+import { useRef, useEffect } from "react";
 import { DEFAULT_MODEL } from "@/lib/constants";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 
 function ChatComponent() {
+  const inputRef = useRef<HTMLInputElement>(null);
   const searchParams = useSearchParams();
   const modelId = searchParams.get("modelId") || DEFAULT_MODEL;
-  const inputRef = useRef<HTMLInputElement>(null);
 
-  const { messages, input, handleInputChange, handleSubmit } = useChat({
-    body: {
-      modelId,
-    },
-  });
+  const { messages, input, handleInputChange, handleSubmit, error, reload } =
+    useChat({
+      body: {
+        modelId,
+      },
+    });
 
   useEffect(() => {
     inputRef.current?.focus();
-  }, []);
+  }, [inputRef.current]);
 
   return (
     <div className="grid w-screen h-screen grid-rows-[1fr_auto] max-w-[800px] m-auto">
@@ -43,6 +46,25 @@ function ChatComponent() {
           )
         )}
       </div>
+
+      {error && (
+        <div className="px-8 pb-4">
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>
+              An error occurred while generating the response.
+            </AlertDescription>
+            <Button
+              variant="outline"
+              size="sm"
+              className="ml-auto"
+              onClick={() => reload()}
+            >
+              Retry
+            </Button>
+          </Alert>
+        </div>
+      )}
 
       <form
         onSubmit={handleSubmit}
@@ -84,9 +106,5 @@ function ChatComponent() {
 }
 
 export default function Page() {
-  return (
-    <Suspense fallback={<div className="p-8">Loading...</div>}>
-      <ChatComponent />
-    </Suspense>
-  );
+  return <ChatComponent />;
 }

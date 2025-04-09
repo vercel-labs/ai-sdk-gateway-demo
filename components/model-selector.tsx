@@ -1,7 +1,7 @@
 "use client";
 
 import { useAvailableModels } from "@/lib/hooks/use-available-models";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { DEFAULT_MODEL } from "@/lib/constants";
 import {
@@ -13,18 +13,21 @@ import {
   SelectGroup,
   SelectLabel,
 } from "@/components/ui/select";
+import { memo } from "react";
 
 type ModelSelectorProps = {
   modelId: string;
   onModelChange?: (modelId: string) => void;
 };
 
-export function ModelSelector({
+export const ModelSelector = memo(function ModelSelector({
   modelId = DEFAULT_MODEL,
   onModelChange,
 }: ModelSelectorProps) {
   const { models, isLoading, error } = useAvailableModels();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const currentModelId = searchParams.get("modelId") || modelId;
 
   const handleModelChange = (value: string) => {
     if (onModelChange) {
@@ -38,7 +41,7 @@ export function ModelSelector({
 
   return (
     <Select
-      defaultValue={modelId}
+      value={currentModelId}
       onValueChange={handleModelChange}
       disabled={isLoading || !!error || !models?.length}
     >
@@ -69,4 +72,4 @@ export function ModelSelector({
       </SelectContent>
     </Select>
   );
-}
+});
