@@ -1,4 +1,4 @@
-import { gateway } from "@vercel/ai-sdk-gateway";
+import { gateway } from "@/lib/gateway";
 import { NextResponse } from "next/server";
 
 export async function GET() {
