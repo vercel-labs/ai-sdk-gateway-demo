@@ -7,15 +7,19 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SendIcon } from "lucide-react";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, Suspense } from "react";
 import { DEFAULT_MODEL } from "@/lib/constants";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 
-function ChatComponent() {
-  const inputRef = useRef<HTMLInputElement>(null);
+function ModelSelectorWithParams() {
   const searchParams = useSearchParams();
   const modelId = searchParams.get("modelId") || DEFAULT_MODEL;
+  return <ModelSelector modelId={modelId} />;
+}
+
+function ChatComponent({ modelId }: { modelId: string }) {
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const { messages, input, handleInputChange, handleSubmit, error, reload } =
     useChat({
@@ -26,7 +30,7 @@ function ChatComponent() {
 
   useEffect(() => {
     inputRef.current?.focus();
-  }, [inputRef.current]);
+  }, []);
 
   return (
     <div className="grid w-screen h-screen grid-rows-[1fr_auto] max-w-[800px] m-auto">
@@ -72,7 +76,9 @@ function ChatComponent() {
       >
         <Card className="w-full p-0">
           <CardContent className="flex items-center gap-3 p-2">
-            <ModelSelector modelId={modelId} />
+            <Suspense fallback={<ModelSelector modelId={DEFAULT_MODEL} />}>
+              <ModelSelectorWithParams />
+            </Suspense>
 
             <div className="flex flex-1 items-center">
               <Input
@@ -106,5 +112,5 @@ function ChatComponent() {
 }
 
 export default function Page() {
-  return <ChatComponent />;
+  return <ChatComponent modelId={DEFAULT_MODEL} />;
 }
