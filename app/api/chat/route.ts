@@ -12,7 +12,7 @@ export async function POST(req: Request) {
     system: "You are a software engineer exploring Generative AI.",
     messages,
     onError: (e) => {
-      console.error(`Error while streaming: ${e}`);
+      console.error(`Error while streaming.`, e);
     },
   });
   return result.toDataStreamResponse();
