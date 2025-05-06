@@ -12,7 +12,7 @@
     "@ai-sdk/react": "^1.2.11",
     "@radix-ui/react-select": "^2.2.2",
     "@radix-ui/react-slot": "^1.2.0",
-    "@vercel/ai-sdk-gateway": "^0.0.10",
+    "@vercel/ai-sdk-gateway": "^0.0.13",
     "ai": "^4.3.13",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
