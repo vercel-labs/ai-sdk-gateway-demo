@@ -1,1 +1,1 @@
-export const DEFAULT_MODEL = "xai/grok-2-1212";
+export const DEFAULT_MODEL = "xai/grok-3-beta";
