@@ -11,6 +11,13 @@ import { useRef, useEffect, Suspense, useState, useCallback } from "react";
 import { DEFAULT_MODEL } from "@/lib/constants";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
+import { defaultChatStore, TextUIPart, UIMessagePart } from "ai";
+
+const chatStore = defaultChatStore({
+  api: "/api/chat",
+  maxSteps: 5,
+  chats: {},
+});
 
 function ModelSelectorHandler({
   onModelIdChange,
@@ -46,13 +53,42 @@ function ChatComponent() {
     setCurrentModelId(newModelId);
   }, []);
 
-  const { messages, input, handleInputChange, handleSubmit, error, reload } =
-    useChat({
-      key: currentModelId,
+  const {
+    messages,
+    input,
+    handleInputChange,
+    handleSubmit: originalHandleSubmit,
+    error,
+    reload: originalReload,
+  } = useChat({
+    chatStore,
+  });
+
+  const handleSubmit = useCallback(
+    (event?: { preventDefault?: () => void }) => {
+      originalHandleSubmit(event, {
+        body: {
+          modelId: currentModelId,
+        },
+      });
+    },
+    [originalHandleSubmit, currentModelId]
+  );
+
+  const reload = useCallback(() => {
+    originalReload({
       body: {
         modelId: currentModelId,
       },
     });
+  }, [originalReload, currentModelId]);
+
+  const getTextContent = useCallback((parts: UIMessagePart<TextUIPart>[]) => {
+    return parts
+      .filter((p) => p.type === "text")
+      .map((p) => p.text)
+      .join("");
+  }, []);
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -67,11 +103,11 @@ function ChatComponent() {
               key={m.id}
               className="whitespace-pre-wrap bg-muted/50 rounded-md p-3 ml-auto max-w-[80%]"
             >
-              {m.content}
+              {getTextContent(m.parts as UIMessagePart<TextUIPart>[])}
             </div>
           ) : (
             <div key={m.id} className="whitespace-pre-wrap">
-              {m.content}
+              {getTextContent(m.parts as UIMessagePart<TextUIPart>[])}
             </div>
           )
         )}
