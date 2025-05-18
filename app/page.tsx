@@ -11,7 +11,7 @@ import { useRef, useEffect, Suspense, useState, useCallback } from "react";
 import { DEFAULT_MODEL } from "@/lib/constants";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
-import { defaultChatStore, UIMessagePart } from "ai";
+import { defaultChatStore, TextUIPart, UIMessagePart } from "ai";
 
 const chatStore = defaultChatStore({
   api: "/api/chat",
@@ -83,7 +83,7 @@ function ChatComponent() {
     });
   }, [originalReload, currentModelId]);
 
-  const getTextContent = useCallback((parts: UIMessagePart<any>[]) => {
+  const getTextContent = useCallback((parts: UIMessagePart<TextUIPart>[]) => {
     return parts
       .filter((p) => p.type === "text")
       .map((p) => p.text)
@@ -103,11 +103,11 @@ function ChatComponent() {
               key={m.id}
               className="whitespace-pre-wrap bg-muted/50 rounded-md p-3 ml-auto max-w-[80%]"
             >
-              {getTextContent(m.parts)}
+              {getTextContent(m.parts as UIMessagePart<TextUIPart>[])}
             </div>
           ) : (
             <div key={m.id} className="whitespace-pre-wrap">
-              {getTextContent(m.parts)}
+              {getTextContent(m.parts as UIMessagePart<TextUIPart>[])}
             </div>
           )
         )}
