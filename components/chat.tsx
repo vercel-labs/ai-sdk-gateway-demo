@@ -50,7 +50,6 @@ export function Chat({ modelId = DEFAULT_MODEL }: { modelId: string }) {
 
   return (
     <div className="grid w-screen h-screen grid-rows-[1fr_auto] max-w-[800px] m-auto">
-      <div>{currentModelId}</div>
       <div className="flex flex-col-reverse gap-8 p-8 overflow-y-auto">
         {messages.toReversed().map((m) => (
           <div
