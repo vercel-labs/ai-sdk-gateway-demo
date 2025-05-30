@@ -11,7 +11,7 @@ import { useState } from "react";
 import { DEFAULT_MODEL } from "@/lib/constants";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
-import { defaultChatStore } from "ai";
+import { defaultChatStoreOptions } from "ai";
 import { cn } from "@/lib/utils";
 
 function ModelSelectorHandler({
@@ -42,7 +42,7 @@ export function Chat({ modelId = DEFAULT_MODEL }: { modelId: string }) {
 
   const { messages, input, handleInputChange, handleSubmit, error, reload } =
     useChat({
-      chatStore: defaultChatStore({
+      chatStore: defaultChatStoreOptions({
         api: "/api/chat",
         maxSteps: 3,
       }),
@@ -57,7 +57,7 @@ export function Chat({ modelId = DEFAULT_MODEL }: { modelId: string }) {
             className={cn(
               "whitespace-pre-wrap",
               m.role === "user" &&
-                "bg-muted/50 rounded-md p-3 ml-auto max-w-[80%]",
+                "bg-muted/50 rounded-md p-3 ml-auto max-w-[80%]"
             )}
           >
             {m.parts.map((part, i) => {
