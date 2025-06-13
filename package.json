@@ -9,11 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ai-sdk/react": "2.0.0-alpha.8",
+    "@ai-sdk/react": "2.0.0-alpha.12",
     "@radix-ui/react-select": "^2.2.2",
     "@radix-ui/react-slot": "^1.2.0",
     "@vercel/ai-sdk-gateway": "^0.1.10",
-    "ai": "5.0.0-alpha.8",
+    "ai": "5.0.0-alpha.12",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.506.0",
