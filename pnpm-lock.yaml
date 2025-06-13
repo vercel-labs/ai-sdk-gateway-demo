@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@ai-sdk/gateway':
+        specifier: 1.0.0-alpha.12
+        version: 1.0.0-alpha.12(zod@3.25.49)
       '@ai-sdk/react':
         specifier: 2.0.0-alpha.12
         version: 2.0.0-alpha.12(react@19.1.0)(zod@3.25.49)
@@ -17,9 +20,6 @@ importers:
       '@radix-ui/react-slot':
         specifier: ^1.2.0
         version: 1.2.0(@types/react@19.1.2)(react@19.1.0)
-      '@vercel/ai-sdk-gateway':
-        specifier: ^0.1.10
-        version: 0.1.10(zod@3.25.49)
       ai:
         specifier: 5.0.0-alpha.12
         version: 5.0.0-alpha.12(zod@3.25.49)
@@ -96,18 +96,8 @@ packages:
     peerDependencies:
       zod: ^3.25.49
 
-  '@ai-sdk/provider-utils@3.0.0-alpha.8':
-    resolution: {integrity: sha512-unF27VpLGWpbj1lyUNBTPSiS9HDSi0CDrGgEYAUNBBL7t8m9A6KokQTv26mkM0fyVzU39YmUbiMYsgnVryDoxA==}
-    engines: {node: '>=18'}
-    peerDependencies:
-      zod: ^3.25.46
-
   '@ai-sdk/provider@2.0.0-alpha.12':
     resolution: {integrity: sha512-Sln9EjB7fWPC3zM20o3NX+p16n3Gxzg0UOol4/fLkctY/ZblQJ2K8ZQ4lzbsKQECzyTZU9n8F0QIXS0J3gF/EQ==}
-    engines: {node: '>=18'}
-
-  '@ai-sdk/provider@2.0.0-alpha.8':
-    resolution: {integrity: sha512-wsGdaGWPmCdOGzfNJQMFkZMYfdDU5BQOPJLiRYC7inN0vA9GbEkFk0ty98p+8LlRs++C8iGOvJMU7ZZuG8n7AA==}
     engines: {node: '>=18'}
 
   '@ai-sdk/react@2.0.0-alpha.12':
@@ -902,12 +892,6 @@ packages:
     resolution: {integrity: sha512-friS8NEQfHaDbkThxopGk+LuE5v3iY0StruifjQEt7SLbA46OnfgMO15sOTkbpJkol6RB+1l1TYPXh0sCddpvA==}
     cpu: [x64]
     os: [win32]
-
-  '@vercel/ai-sdk-gateway@0.1.10':
-    resolution: {integrity: sha512-vhs8stlYCEVwmZ+so5a9HHoVfLMZP8ouFxt9UnWvRBbLIM3ChYd76MkGaGh4DDdcFHewL+rUk4vCdmvsZUXGjQ==}
-    engines: {node: '>=20'}
-    peerDependencies:
-      zod: ^3.25.48
 
   acorn-jsx@5.3.2:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
@@ -2200,18 +2184,7 @@ snapshots:
       zod: 3.25.49
       zod-to-json-schema: 3.24.5(zod@3.25.49)
 
-  '@ai-sdk/provider-utils@3.0.0-alpha.8(zod@3.25.49)':
-    dependencies:
-      '@ai-sdk/provider': 2.0.0-alpha.8
-      '@standard-schema/spec': 1.0.0
-      zod: 3.25.49
-      zod-to-json-schema: 3.24.5(zod@3.25.49)
-
   '@ai-sdk/provider@2.0.0-alpha.12':
-    dependencies:
-      json-schema: 0.4.0
-
-  '@ai-sdk/provider@2.0.0-alpha.8':
     dependencies:
       json-schema: 0.4.0
 
@@ -2896,12 +2869,6 @@ snapshots:
 
   '@unrs/resolver-binding-win32-x64-msvc@1.7.2':
     optional: true
-
-  '@vercel/ai-sdk-gateway@0.1.10(zod@3.25.49)':
-    dependencies:
-      '@ai-sdk/provider': 2.0.0-alpha.8
-      '@ai-sdk/provider-utils': 3.0.0-alpha.8(zod@3.25.49)
-      zod: 3.25.49
 
   acorn-jsx@5.3.2(acorn@8.14.1):
     dependencies:
