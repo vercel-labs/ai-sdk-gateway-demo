@@ -11,7 +11,6 @@ import { useState } from "react";
 import { DEFAULT_MODEL } from "@/lib/constants";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
-import { defaultChatStoreOptions } from "ai";
 import { cn } from "@/lib/utils";
 
 function ModelSelectorHandler({
@@ -34,19 +33,16 @@ function ModelSelectorHandler({
 }
 
 export function Chat({ modelId = DEFAULT_MODEL }: { modelId: string }) {
+  const [input, setInput] = useState("");
   const [currentModelId, setCurrentModelId] = useState(modelId);
 
   const handleModelIdChange = (newModelId: string) => {
     setCurrentModelId(newModelId);
   };
 
-  const { messages, input, handleInputChange, handleSubmit, error, reload } =
-    useChat({
-      chatStore: defaultChatStoreOptions({
-        api: "/api/chat",
-        maxSteps: 3,
-      }),
-    });
+  const { messages, error, sendMessage, reload } = useChat({
+    maxSteps: 3,
+  });
 
   return (
     <div className="grid w-screen h-screen grid-rows-[1fr_auto] max-w-[800px] m-auto">
@@ -57,7 +53,7 @@ export function Chat({ modelId = DEFAULT_MODEL }: { modelId: string }) {
             className={cn(
               "whitespace-pre-wrap",
               m.role === "user" &&
-                "bg-muted/50 rounded-md p-3 ml-auto max-w-[80%]"
+                "bg-muted/50 rounded-md p-3 ml-auto max-w-[80%]",
             )}
           >
             {m.parts.map((part, i) => {
@@ -91,7 +87,9 @@ export function Chat({ modelId = DEFAULT_MODEL }: { modelId: string }) {
 
       <form
         onSubmit={(e) => {
-          handleSubmit(e, { body: { modelId: currentModelId } });
+          e.preventDefault();
+          sendMessage({ text: input }, { body: { modelId: currentModelId } });
+          setInput("");
         }}
         className="flex justify-center px-8 pt-0 pb-8"
       >
@@ -105,13 +103,17 @@ export function Chat({ modelId = DEFAULT_MODEL }: { modelId: string }) {
               <Input
                 name="prompt"
                 placeholder="Type your message..."
-                onChange={handleInputChange}
+                onChange={(e) => setInput(e.target.value)}
                 value={input}
                 autoFocus
                 className="flex-1 border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
                 onKeyDown={(e) => {
                   if (e.metaKey && e.key === "Enter") {
-                    handleSubmit(e, { body: { modelId: currentModelId } });
+                    sendMessage(
+                      { text: input },
+                      { body: { modelId: currentModelId } },
+                    );
+                    setInput("");
                   }
                 }}
               />
