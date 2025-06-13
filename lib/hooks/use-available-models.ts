@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import type { DisplayModel } from "@/lib/display-model";
-import type { GatewayLanguageModelEntry } from "@vercel/ai-sdk-gateway";
+import type { GatewayLanguageModelEntry } from "@ai-sdk/gateway";
 
 const DEFAULT_MODELS: DisplayModel[] = [
   { id: "xai/grok-3-beta", label: "Grok 3 Beta" },
