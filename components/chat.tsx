@@ -45,7 +45,7 @@ export function Chat({ modelId = DEFAULT_MODEL }: { modelId: string }) {
   });
 
   return (
-    <div className="grid w-screen h-screen grid-rows-[1fr_auto] max-w-[800px] m-auto">
+    <div className="grid w-screen h-screen grid-rows-[1fr_auto_auto] max-w-[800px] m-auto">
       <div className="flex flex-col-reverse gap-8 p-8 overflow-y-auto">
         {messages.toReversed().map((m) => (
           <div
@@ -53,7 +53,7 @@ export function Chat({ modelId = DEFAULT_MODEL }: { modelId: string }) {
             className={cn(
               "whitespace-pre-wrap",
               m.role === "user" &&
-                "bg-muted/50 rounded-md p-3 ml-auto max-w-[80%]",
+                "bg-muted/50 rounded-md p-3 ml-auto max-w-[80%]"
             )}
           >
             {m.parts.map((part, i) => {
@@ -91,7 +91,7 @@ export function Chat({ modelId = DEFAULT_MODEL }: { modelId: string }) {
           sendMessage({ text: input }, { body: { modelId: currentModelId } });
           setInput("");
         }}
-        className="flex justify-center px-8 pt-0 pb-8"
+        className="flex justify-center px-8 pt-0 pb-4"
       >
         <Card className="w-full p-0">
           <CardContent className="flex items-center gap-3 p-2">
@@ -111,7 +111,7 @@ export function Chat({ modelId = DEFAULT_MODEL }: { modelId: string }) {
                   if (e.metaKey && e.key === "Enter") {
                     sendMessage(
                       { text: input },
-                      { body: { modelId: currentModelId } },
+                      { body: { modelId: currentModelId } }
                     );
                     setInput("");
                   }
@@ -129,6 +129,29 @@ export function Chat({ modelId = DEFAULT_MODEL }: { modelId: string }) {
           </CardContent>
         </Card>
       </form>
+
+      <footer className="px-8 pb-8 text-center">
+        <p className="text-sm text-muted-foreground">
+          The models in the list are a small subset of those available in the
+          Vercel AI Gateway.
+          <br />
+          See the{" "}
+          <Button
+            variant="link"
+            asChild
+            className="p-0 h-auto text-sm font-normal"
+          >
+            <a
+              href="https://ai-sdk.dev/model-library"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              model library
+            </a>
+          </Button>{" "}
+          for the full set.
+        </p>
+      </footer>
     </div>
   );
 }
