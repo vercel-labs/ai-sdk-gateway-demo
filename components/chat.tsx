@@ -40,7 +40,7 @@ export function Chat({ modelId = DEFAULT_MODEL }: { modelId: string }) {
     setCurrentModelId(newModelId);
   };
 
-  const { messages, error, sendMessage, reload } = useChat({
+  const { messages, error, sendMessage, regenerate } = useChat({
     maxSteps: 3,
   });
 
@@ -77,7 +77,7 @@ export function Chat({ modelId = DEFAULT_MODEL }: { modelId: string }) {
               variant="outline"
               size="sm"
               className="ml-auto"
-              onClick={() => reload()}
+              onClick={() => regenerate()}
             >
               Retry
             </Button>
