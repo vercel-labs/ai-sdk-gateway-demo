@@ -40,9 +40,7 @@ export function Chat({ modelId = DEFAULT_MODEL }: { modelId: string }) {
     setCurrentModelId(newModelId);
   };
 
-  const { messages, error, sendMessage, regenerate } = useChat({
-    maxSteps: 3,
-  });
+  const { messages, error, sendMessage, regenerate } = useChat();
 
   return (
     <div className="grid w-screen h-screen grid-rows-[1fr_auto_auto] max-w-[800px] m-auto">
@@ -53,7 +51,7 @@ export function Chat({ modelId = DEFAULT_MODEL }: { modelId: string }) {
             className={cn(
               "whitespace-pre-wrap",
               m.role === "user" &&
-                "bg-muted/50 rounded-md p-3 ml-auto max-w-[80%]"
+                "bg-muted/50 rounded-md p-3 ml-auto max-w-[80%]",
             )}
           >
             {m.parts.map((part, i) => {
@@ -111,7 +109,7 @@ export function Chat({ modelId = DEFAULT_MODEL }: { modelId: string }) {
                   if (e.metaKey && e.key === "Enter") {
                     sendMessage(
                       { text: input },
-                      { body: { modelId: currentModelId } }
+                      { body: { modelId: currentModelId } },
                     );
                     setInput("");
                   }
