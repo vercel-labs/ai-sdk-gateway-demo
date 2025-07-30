@@ -142,7 +142,7 @@ export function Chat({ modelId = DEFAULT_MODEL }: { modelId: string }) {
             className="p-0 h-auto text-sm font-normal"
           >
             <a
-              href="https://ai-sdk.dev/model-library"
+              href="https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%2Fmodel-list&title="
               target="_blank"
               rel="noopener noreferrer"
             >
