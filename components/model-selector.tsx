@@ -31,7 +31,7 @@ export const ModelSelector = memo(function ModelSelector({
       onValueChange={onModelChange}
       disabled={isLoading || !!error || !models?.length}
     >
-      <SelectTrigger className="w-9 h-9 md:w-[140px] border-0 bg-transparent focus:ring-0 focus:ring-offset-0 focus:outline-none focus-visible:outline-none rounded-xl font-medium text-sm p-0 md:px-3 [&_[data-placeholder]]:hidden md:[&_[data-placeholder]]:block [&>svg]:hidden md:[&>svg]:block">
+      <SelectTrigger className="w-9 h-9 md:w-[140px] border-0 bg-transparent focus:ring-0 focus:ring-offset-0 focus:outline-none focus-visible:outline-none focus:border-0 focus-visible:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 rounded-xl font-medium text-sm p-0 md:px-3 [&_[data-placeholder]]:hidden md:[&_[data-placeholder]]:block [&>svg]:hidden md:[&>svg]:block">
         <div className="flex items-center justify-center w-full h-full md:hidden">
           {isLoading ? (
             <Loader2 className="h-4 w-4 animate-spin" />
