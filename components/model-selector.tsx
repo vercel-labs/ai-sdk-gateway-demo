@@ -1,7 +1,7 @@
 "use client";
 
 import { useAvailableModels } from "@/lib/hooks/use-available-models";
-import { Loader2 } from "lucide-react";
+import { Loader2, ChevronDown } from "lucide-react";
 import { DEFAULT_MODEL } from "@/lib/constants";
 import {
   Select,
@@ -31,22 +31,31 @@ export const ModelSelector = memo(function ModelSelector({
       onValueChange={onModelChange}
       disabled={isLoading || !!error || !models?.length}
     >
-      <SelectTrigger className="w-[160px] h-9 border-0 bg-transparent focus:ring-0 focus:ring-offset-0 rounded-xl font-medium">
-        {isLoading ? (
-          <div className="flex items-center gap-2">
-            <Loader2 className="h-3 w-3 animate-spin" />
-            <span className="text-sm">Loading</span>
-          </div>
-        ) : error ? (
-          <span className="text-red-500 text-sm">Error</span>
-        ) : !models?.length ? (
-          <span className="text-sm">No models</span>
-        ) : (
-          <SelectValue placeholder="Select model" />
-        )}
+      <SelectTrigger className="w-9 h-9 md:w-[140px] border-0 bg-transparent focus:ring-0 focus:ring-offset-0 focus:outline-none focus-visible:outline-none rounded-xl font-medium text-sm p-0 md:px-3 [&_[data-placeholder]]:hidden md:[&_[data-placeholder]]:block [&>svg]:hidden md:[&>svg]:block">
+        <div className="flex items-center justify-center w-full h-full md:hidden">
+          {isLoading ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <ChevronDown className="h-4 w-4" />
+          )}
+        </div>
+        <div className="hidden md:flex items-center gap-2 w-full">
+          {isLoading ? (
+            <>
+              <Loader2 className="h-3 w-3 animate-spin" />
+              <span className="text-sm">Loading</span>
+            </>
+          ) : error ? (
+            <span className="text-red-500 text-sm">Error</span>
+          ) : !models?.length ? (
+            <span className="text-sm">No models</span>
+          ) : (
+            <SelectValue placeholder="Select model" />
+          )}
+        </div>
       </SelectTrigger>
 
-      <SelectContent className="rounded-2xl border-0 shadow-border-medium bg-popover/95 backdrop-blur-sm animate-scale-in" align="center" sideOffset={8}>
+      <SelectContent className="rounded-2xl border-0 shadow-border-medium bg-popover/95 backdrop-blur-sm animate-scale-in" align="start" sideOffset={4}>
         <SelectGroup>
           <SelectLabel className="text-xs text-muted-foreground px-2 py-1">Models</SelectLabel>
           {models?.map((model) => (

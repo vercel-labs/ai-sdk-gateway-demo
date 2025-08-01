@@ -61,7 +61,7 @@ export function Chat({ modelId = DEFAULT_MODEL }: { modelId: string }) {
 
   return (
     <div className="flex flex-col h-screen overflow-hidden">
-      <div className="absolute top-4 left-4 z-10 flex gap-2 animate-fade-in">
+      <div className="absolute top-3 left-3 md:top-4 md:left-4 z-10 flex gap-2 animate-fade-in">
         <Button
           onClick={handleNewChat}
           variant="outline"
@@ -73,9 +73,9 @@ export function Chat({ modelId = DEFAULT_MODEL }: { modelId: string }) {
         <ThemeToggle />
       </div>
       {!hasMessages && (
-        <div className="flex-1 flex flex-col items-center justify-center px-8 animate-fade-in">
-          <div className="w-full max-w-2xl text-center space-y-12">
-            <h1 className="text-4xl md:text-6xl font-light tracking-tight text-foreground animate-slide-up">
+        <div className="flex-1 flex flex-col items-center justify-center px-4 md:px-8 animate-fade-in">
+          <div className="w-full max-w-2xl text-center space-y-8 md:space-y-12">
+            <h1 className="text-3xl md:text-6xl font-light tracking-tight text-foreground animate-slide-up">
               <span className="font-mono font-semibold tracking-tight bg-foreground text-background px-4 py-3 rounded-2xl shadow-border-medium">
                 AI GATEWAY
               </span>
@@ -88,7 +88,7 @@ export function Chat({ modelId = DEFAULT_MODEL }: { modelId: string }) {
                   setInput("");
                 }}
               >
-                <div className="flex items-center gap-3 p-4 rounded-2xl glass-effect shadow-border-medium transition-all duration-200 ease-out">
+                <div className="flex items-center gap-2 md:gap-3 p-3 md:p-4 rounded-2xl glass-effect shadow-border-medium transition-all duration-200 ease-out">
                   <ModelSelectorHandler
                     modelId={modelId}
                     onModelIdChange={handleModelIdChange}
@@ -130,16 +130,16 @@ export function Chat({ modelId = DEFAULT_MODEL }: { modelId: string }) {
 
       {hasMessages && (
         <div className="flex-1 flex flex-col max-w-4xl mx-auto w-full animate-fade-in overflow-hidden">
-          <div className="flex-1 overflow-y-auto px-8 py-4 hide-scrollbar">
-            <div className="flex flex-col gap-6 pb-4">
+          <div className="flex-1 overflow-y-auto px-4 md:px-8 py-4 hide-scrollbar">
+            <div className="flex flex-col gap-4 md:gap-6 pb-4">
               {messages.map((m) => (
                 <div
                   key={m.id}
                   className={cn(
                     "whitespace-pre-wrap",
                     m.role === "user" &&
-                      "bg-foreground text-background rounded-2xl p-4 ml-auto max-w-[75%] shadow-border-small font-medium",
-                    m.role === "assistant" && "max-w-[85%] text-foreground/90 leading-relaxed"
+                      "bg-foreground text-background rounded-2xl p-3 md:p-4 ml-auto max-w-[90%] md:max-w-[75%] shadow-border-small font-medium text-sm md:text-base",
+                    m.role === "assistant" && "max-w-[95%] md:max-w-[85%] text-foreground/90 leading-relaxed text-sm md:text-base"
                   )}
                 >
                   {m.parts.map((part, i) => {
@@ -158,7 +158,7 @@ export function Chat({ modelId = DEFAULT_MODEL }: { modelId: string }) {
       )}
 
       {error && (
-        <div className="max-w-4xl mx-auto w-full px-8 pb-4 animate-slide-down">
+        <div className="max-w-4xl mx-auto w-full px-4 md:px-8 pb-4 animate-slide-down">
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>
@@ -184,7 +184,7 @@ export function Chat({ modelId = DEFAULT_MODEL }: { modelId: string }) {
               sendMessage({ text: input }, { body: { modelId: currentModelId } });
               setInput("");
             }}
-            className="px-8 pb-8"
+            className="px-4 md:px-8 pb-6 md:pb-8"
           >
             <div className="flex items-center gap-3 p-4 rounded-2xl glass-effect shadow-border-medium transition-all duration-200 ease-out">
               <ModelSelectorHandler
@@ -224,7 +224,7 @@ export function Chat({ modelId = DEFAULT_MODEL }: { modelId: string }) {
       )}
 
       <footer className="pb-8 text-center animate-fade-in" style={{ animationDelay: '200ms' }}>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-xs md:text-sm text-muted-foreground">
           The models in the list are a small subset of those available in the
           Vercel AI Gateway.
           <br />
@@ -232,7 +232,7 @@ export function Chat({ modelId = DEFAULT_MODEL }: { modelId: string }) {
           <Button
             variant="link"
             asChild
-            className="p-0 h-auto text-sm font-normal"
+            className="p-0 h-auto text-xs md:text-sm font-normal"
           >
             <a
               href="https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%2Fmodel-list&title="
