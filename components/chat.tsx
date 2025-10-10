@@ -12,6 +12,7 @@ import { DEFAULT_MODEL } from "@/lib/constants";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 function ModelSelectorHandler({
   modelId,
@@ -159,11 +160,13 @@ export function Chat({ modelId = DEFAULT_MODEL }: { modelId: string }) {
 
       {error && (
         <div className="max-w-4xl mx-auto w-full px-4 md:px-8 pb-4 animate-slide-down">
-          <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>
-              An error occurred while generating the response.
-            </AlertDescription>
+          <Alert variant="destructive" className="flex flex-col items-end">
+            <div className="flex flex-row gap-2">
+              <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
+              <AlertDescription className="dark:text-red-400 text-red-600">
+                {error.message.startsWith("AI Gateway requires a valid credit card") ? <div>AI Gateway requires a valid credit card on file to service requests. Please visit your <Link className="underline underline-offset-4" href="https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dadd-credit-card" target="_noblank">dashboard</Link> to add a card and unlock your free credits.</div> : "An error occurred while generating the response."}
+              </AlertDescription>
+            </div>
             <Button
               variant="outline"
               size="sm"
