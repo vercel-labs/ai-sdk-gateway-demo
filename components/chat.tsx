@@ -139,7 +139,7 @@ export function Chat({ modelId = DEFAULT_MODEL }: { modelId: string }) {
                   key={m.id}
                   className={cn(
                     m.role === "user" &&
-                      "bg-foreground text-background rounded-2xl p-3 md:p-4 ml-auto max-w-[90%] md:max-w-[75%] shadow-border-small font-medium text-sm md:text-base whitespace-pre-wrap",
+                      "bg-foreground text-background rounded-2xl p-3 md:p-4 ml-auto max-w-[90%] md:max-w-[75%] shadow-border-small font-medium text-sm md:text-base",
                     m.role === "assistant" && "max-w-[95%] md:max-w-[85%] text-foreground/90 leading-relaxed text-sm md:text-base"
                   )}
                 >
