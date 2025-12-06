@@ -13,6 +13,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { Streamdown } from "streamdown";
 
 function ModelSelectorHandler({
   modelId,
@@ -42,7 +43,7 @@ export function Chat({ modelId = DEFAULT_MODEL }: { modelId: string }) {
     setCurrentModelId(newModelId);
   };
 
-  const { messages, error, sendMessage, regenerate, setMessages, stop } = useChat();
+  const { messages, error, sendMessage, regenerate, setMessages, stop, status } = useChat();
 
   const hasMessages = messages.length > 0;
 
@@ -137,7 +138,6 @@ export function Chat({ modelId = DEFAULT_MODEL }: { modelId: string }) {
                 <div
                   key={m.id}
                   className={cn(
-                    "whitespace-pre-wrap",
                     m.role === "user" &&
                       "bg-foreground text-background rounded-2xl p-3 md:p-4 ml-auto max-w-[90%] md:max-w-[75%] shadow-border-small font-medium text-sm md:text-base",
                     m.role === "assistant" && "max-w-[95%] md:max-w-[85%] text-foreground/90 leading-relaxed text-sm md:text-base"
@@ -146,7 +146,13 @@ export function Chat({ modelId = DEFAULT_MODEL }: { modelId: string }) {
                   {m.parts.map((part, i) => {
                     switch (part.type) {
                       case "text":
-                        return <div key={`${m.id}-${i}`}>{part.text}</div>;
+                        return m.role === "assistant" ? (
+                          <Streamdown key={`${m.id}-${i}`} isAnimating={status === "streaming" && m.id === messages[messages.length - 1]?.id}>
+                            {part.text}
+                          </Streamdown>
+                        ) : (
+                          <div key={`${m.id}-${i}`}>{part.text}</div>
+                        );
                     }
                   })}
                 </div>
