@@ -1,4 +1,10 @@
-import { convertToModelMessages, streamText, type UIMessage } from "ai";
+import {
+  convertToModelMessages,
+  createUIMessageStreamResponse,
+  streamText,
+  toUIMessageStream,
+  type UIMessage,
+} from "ai";
 import { DEFAULT_MODEL, SUPPORTED_MODELS } from "@/lib/constants";
 import { gateway } from "@/lib/gateway";
 
@@ -19,12 +25,14 @@ export async function POST(req: Request) {
 
   const result = streamText({
     model: gateway(modelId),
-    system: "You are a software engineer exploring Generative AI.",
-    messages: convertToModelMessages(messages),
+    instructions: "You are a software engineer exploring Generative AI.",
+    messages: await convertToModelMessages(messages),
     onError: (e) => {
       console.error("Error while streaming.", e);
     },
   });
 
-  return result.toUIMessageStreamResponse();
+  return createUIMessageStreamResponse({
+    stream: toUIMessageStream({ stream: result.stream }),
+  });
 }
